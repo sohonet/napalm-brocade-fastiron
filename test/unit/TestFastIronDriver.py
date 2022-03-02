@@ -26,15 +26,16 @@ class TestConfigFastIronDriver(unittest.TestCase, TestConfigNetworkDriver):
     @classmethod
     def setUpClass(cls):
         """Run before starting the tests."""
-        hostname = '127.0.0.1'
-        username = 'vagrant'
-        password = 'vagrant'
-        cls.vendor = 'FastIron'
+        hostname = "127.0.0.1"
+        username = "vagrant"
+        password = "vagrant"
+        cls.vendor = "FastIron"
 
-        optional_args = {'port': 12443, }
-        cls.device = FastIron.FastIronDriver(hostname, username, password, timeout=60,
-                                             optional_args=optional_args)
+        optional_args = {
+            "port": 12443,
+        }
+        cls.device = FastIron.FastIronDriver(hostname, username, password, timeout=60, optional_args=optional_args)
         cls.device.open()
 
-        cls.device.load_replace_candidate(filename='%s/initial.conf' % cls.vendor)
+        cls.device.load_replace_candidate(filename="%s/initial.conf" % cls.vendor)
         cls.device.commit_config()

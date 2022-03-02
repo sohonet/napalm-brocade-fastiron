@@ -17,7 +17,7 @@ import pkg_resources
 from napalm_fastiron.FastIron import FastIronDriver
 
 try:
-    __version__ = pkg_resources.get_distribution('napalm-brocade-fastiron').version
+    __version__ = pkg_resources.get_distribution("napalm-brocade-fastiron").version
 except pkg_resources.DistributionNotFound:
     __version__ = "Not installed"
 
