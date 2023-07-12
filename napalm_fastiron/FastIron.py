@@ -194,7 +194,6 @@ class FastIronDriver(NetworkDriver):
         temp = ""  # sets empty string, will add char respectively
         my_list = list()  # creates list
         for val in range(0, len(my_string)):  # iterates through the length of input
-
             if my_string[val] == "\n" and temp == "":
                 continue
             elif my_string[val] == "\n" or val == len(my_string) - 1:  # add what was found
@@ -335,7 +334,6 @@ class FastIronDriver(NetworkDriver):
         interface_details = FastIronDriver.__delete_if_contains(n_line_output, del_word)
 
         for port_det in interface_details:
-
             if trigger == 0:
                 interfaces_list.append(port_det[pos])
             else:  # removes non physical interface
@@ -389,7 +387,6 @@ class FastIronDriver(NetworkDriver):
         my_string = ""  # empty string
 
         for index in range(len(output)):  # iterates through all characters of output
-
             if output[index] != "\n" and output[index] != " ":  # skips newline and spaces
                 my_string += output[index]
 
@@ -818,7 +815,6 @@ class FastIronDriver(NetworkDriver):
             my_temp = FastIronDriver.__creates_list_of_nlines(diff_in_config)
 
             for sentence in my_temp:
-
                 if sentence[0] == "-":
                     sentence = sentence[1 : len(sentence)]
                 elif sentence[0] == "+":
@@ -1289,7 +1285,6 @@ class FastIronDriver(NetworkDriver):
         }
 
     def cli(self, commands):
-
         cli_output = dict()
         if type(commands) is not list:
             raise TypeError("Please enter a valid list of commands!")
@@ -1343,7 +1338,6 @@ class FastIronDriver(NetworkDriver):
 
     # Napalm Base Functions
     def get_arp_table(self):
-
         """
         Returns a list of dictionaries having the following set of keys:
             * interface (string)
@@ -1362,7 +1356,6 @@ class FastIronDriver(NetworkDriver):
         arp_table = list()
 
         for val in output:
-
             check = val
             if len(check.split()) < 7:
                 continue
@@ -1384,7 +1377,6 @@ class FastIronDriver(NetworkDriver):
         return arp_table
 
     def get_ntp_peers(self):
-
         """
         Returns the NTP peers configuration as dictionary.
         The keys of the dictionary represent the IP Addresses of the peers.
@@ -1413,7 +1405,6 @@ class FastIronDriver(NetworkDriver):
         return ntp_peers
 
     def get_ntp_servers(self):
-
         """
         Returns the NTP servers configuration as dictionary.
         The keys of the dictionary represent the IP Addresses of the servers.
@@ -1432,7 +1423,6 @@ class FastIronDriver(NetworkDriver):
         return ntp_servers
 
     def get_ntp_stats(self):
-
         """
         Returns a list of NTP synchronization statistics.
 
@@ -1489,7 +1479,6 @@ class FastIronDriver(NetworkDriver):
         return my_list
 
     def get_mac_address_table(self):
-
         """
         Returns a lists of dictionaries. Each dictionary represents an entry in the MAC Address
         Table, having the following keys:
@@ -1560,7 +1549,6 @@ class FastIronDriver(NetworkDriver):
 
         n_line = FastIronDriver.__creates_list_of_nlines(output[token : len(output)])
         for line in n_line:
-
             user, password, encrpt, priv, status, exptime = line.split()
 
             if int(priv) == 0:
@@ -1605,7 +1593,6 @@ class FastIronDriver(NetworkDriver):
             config_list.append("show config")
 
         for cmd in config_list:
-
             if cmd is None:
                 config_dic.update({"candidate": {}})
                 continue
@@ -1623,7 +1610,6 @@ class FastIronDriver(NetworkDriver):
         return config_dic
 
     def get_network_instances(self, name=""):
-
         instances = {}
 
         show_vrf_detail = self.device.send_command("show vrf detail")
@@ -1677,7 +1663,6 @@ class FastIronDriver(NetworkDriver):
         return dict_del
 
     def get_static_routes(self):
-
         routes = []
 
         show_running_config = self.device.send_command("show running-config")
