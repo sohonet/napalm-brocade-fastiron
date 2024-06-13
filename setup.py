@@ -1,4 +1,5 @@
 """setup.py file."""
+
 from setuptools import find_packages, setup
 
 __author__ = "Johan van den Dorpe"
@@ -8,7 +9,7 @@ with open("requirements.txt", "r") as fs:
 
 setup(
     name="napalm-brocade-fastiron",
-    version="0.22",
+    version="0.23",
     packages=find_packages(),
     author="Johan van den Dorpe",
     description="Network Automation and Programmability Abstraction Layer with Multivendor support",
