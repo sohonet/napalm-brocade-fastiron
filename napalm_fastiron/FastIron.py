@@ -1101,6 +1101,13 @@ class FastIronDriver(NetworkDriver):
                 result[port]["native-vlan"] = data["access-vlan"]
                 result[port]["access-vlan"] = -1
 
+        # Set native-vlan on tagged ports when dual-mode config present
+        interface_data = textfsm_extractor(self, "show_running_config_interface", self.show_running_config)
+        for interface in interface_data:
+            if interface["dualmode"]:
+                intf = self.__standardize_interface_name(interface["interfacenum"])
+                result[intf]["native-vlan"] = interface["dualmode"]
+
         return result
 
     def get_lldp_neighbors(self):
