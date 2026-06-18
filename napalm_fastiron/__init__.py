@@ -15,11 +15,11 @@
 """napalm-brocade-fastiron package."""
 from napalm_fastiron.FastIron import FastIronDriver
 
-import pkg_resources
+from importlib.metadata import version, PackageNotFoundError
 
 try:
-    __version__ = pkg_resources.get_distribution("napalm-brocade-fastiron").version
-except pkg_resources.DistributionNotFound:
+    __version__ = version("napalm-brocade-fastiron")
+except PackageNotFoundError:
     __version__ = "Not installed"
 
 __all__ = ["FastIronDriver"]
