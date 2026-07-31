@@ -1,0 +1,37 @@
+Current configuration:
+!
+ver 08.0.61T213
+!
+interface loopback 1
+ port-name TEST-LOOPBACK
+ ip address 192.0.2.129 255.255.255.255
+!
+interface ve 300
+ port-name VRRPE-TEST
+ ip access-group TEST-IN-ACL in
+ ip address 192.0.2.1 255.255.255.248
+ ip vrrp-extended vrid 100
+  backup priority 110 track-priority 50
+  ip-address 192.0.2.3
+  track-port ethernet 1/1/1
+  enable
+!
+interface ve 301
+ port-name VRRP-TEST
+ ip address 198.51.100.1 255.255.255.252
+ ip vrrp vrid 7
+  backup
+  ip-address 198.51.100.2
+  activate
+!
+interface ve 302
+ port-name NO-VRRP-TEST
+ ip address 203.0.113.1 255.255.255.248
+!
+interface ve 303
+ port-name UNNUMBERED-VRRPE-TEST
+ ip vrrp-extended vrid 200
+  backup
+  ip-address 203.0.113.129
+  enable
+!

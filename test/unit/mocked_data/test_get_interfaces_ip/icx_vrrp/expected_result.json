@@ -1,0 +1,52 @@
+{
+  "Loopback1": {
+    "ipv4": {
+      "192.0.2.129": {
+        "prefix_length": 32
+      }
+    },
+    "ipv6": {}
+  },
+  "Ve300": {
+    "interfaceacl": "TEST-IN-ACL",
+    "ipv4": {
+      "192.0.2.1": {
+        "prefix_length": 29
+      },
+      "192.0.2.3": {
+        "is_virtual": true,
+        "prefix_length": 29
+      }
+    },
+    "ipv6": {}
+  },
+  "Ve301": {
+    "ipv4": {
+      "198.51.100.1": {
+        "prefix_length": 30
+      },
+      "198.51.100.2": {
+        "is_virtual": true,
+        "prefix_length": 30
+      }
+    },
+    "ipv6": {}
+  },
+  "Ve302": {
+    "ipv4": {
+      "203.0.113.1": {
+        "prefix_length": 29
+      }
+    },
+    "ipv6": {}
+  },
+  "Ve303": {
+    "ipv4": {
+      "203.0.113.129": {
+        "is_virtual": true,
+        "prefix_length": 32
+      }
+    },
+    "ipv6": {}
+  }
+}
