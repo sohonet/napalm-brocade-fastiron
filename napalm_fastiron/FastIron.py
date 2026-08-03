@@ -22,7 +22,7 @@ import re
 import socket
 import sys
 
-from netaddr import IPAddress
+from netaddr import IPAddress, IPNetwork
 
 from netmiko import ConnectHandler
 
@@ -998,6 +998,7 @@ class FastIronDriver(NetworkDriver):
         addresses as keys.
         Each IP Address dictionary has the following keys:
             * prefix_length (int)
+            * is_virtual (bool, only present and only True on a VRRP/VRRP-E virtual address)
         """
         interfaces = {}
 
@@ -1025,7 +1026,45 @@ class FastIronDriver(NetworkDriver):
             if intf["interfaceacl"]:
                 interfaces[port]["interfaceacl"] = intf["interfaceacl"]
 
+        self.__add_virtual_ips(interfaces)
+
         return interfaces
+
+    def __add_virtual_ips(self, interfaces):
+        """Record the VRRP/VRRP-E virtual addresses in an interfaces_ip structure.
+
+        A redundant pair of routers fronting the same subnet each own a different address
+        in it, which is indistinguishable from stale configuration unless the virtual
+        address is reported too, so mark these with is_virtual.
+        """
+        info = textfsm_extractor(self, "show_running_config_interface_virtual_ip", self.show_running_config)
+
+        for intf in info:
+            port = self.__standardize_interface_name(intf["interface"] + intf["interfacenum"])
+            address = intf["virtualipv4address"]
+            ipv4 = interfaces.setdefault(port, {"ipv4": {}, "ipv6": {}})["ipv4"]
+
+            ipv4[address] = {
+                "prefix_length": self.__virtual_ip_prefix_length(ipv4, address),
+                "is_virtual": True,
+            }
+
+    @staticmethod
+    def __virtual_ip_prefix_length(ipv4_addresses, address):
+        """Prefix length of the interface subnet holding ``address``, or 32 if none does.
+
+        A virtual address is configured without a mask and inherits the mask of the
+        interface subnet it sits in; it is not a host route. Falling back to 32 is the
+        most that can be said for a virtual address on an unnumbered interface.
+        """
+        for existing, details in ipv4_addresses.items():
+            if details.get("is_virtual"):
+                continue
+            network = IPNetwork("{}/{}".format(existing, details["prefix_length"]))
+            if address in network:
+                return network.prefixlen
+
+        return 32
 
     def get_vlans(self):
         if not self.show_running_config or "pytest" in sys.modules:
